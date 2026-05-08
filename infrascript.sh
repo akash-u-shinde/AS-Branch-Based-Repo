@@ -1,14 +1,42 @@
 #!/bin/bash
 
-RESOURCE_GROUP_NAME=Demo-RG
-STORAGE_ACCOUNT_NAME=demo-dev-ci-sa
-CONTAINER_NAME=backend.tfstate
+# Variables
+RESOURCE_GROUP="myResourceGroup"
+LOCATION="centralindia"
+STORAGE_ACCOUNT="mystorageacct$RANDOM"
+CONTAINER_NAME="mycontainer"
 
-# Create resource group
-az group create --name $RESOURCE_GROUP_NAME --location centralindia
+# Create Resource Group
+echo "Creating Resource Group..."
+az group create \
+  --name $RESOURCE_GROUP \
+  --location $LOCATION
 
-# Create storage account
-az storage account create --resource-group $RESOURCE_GROUP_NAME --name $STORAGE_ACCOUNT_NAME --sku Standard_LRS --encryption-services blob
+# Create Storage Account
+echo "Creating Storage Account..."
+az storage account create \
+  --name $STORAGE_ACCOUNT \
+  --resource-group $RESOURCE_GROUP \
+  --location $LOCATION \
+  --sku Standard_LRS \
+  --kind StorageV2
 
-# Create blob container
-az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME
+# # Get Storage Account Key
+# echo "Fetching Storage Account Key..."
+# ACCOUNT_KEY=$(az storage account keys list \
+#   --resource-group $RESOURCE_GROUP \
+#   --account-name $STORAGE_ACCOUNT \
+#   --query "[0].value" \
+#   --output tsv)
+
+# Create Blob Container
+echo "Creating Blob Container..."
+az storage container create \
+  --name $CONTAINER_NAME \
+  --account-name $STORAGE_ACCOUNT \
+  --account-key $ACCOUNT_KEY
+
+echo "----------------------------------------"
+echo "Storage Account Created: $STORAGE_ACCOUNT"
+echo "Container Created: $CONTAINER_NAME"
+echo "----------------------------------------"

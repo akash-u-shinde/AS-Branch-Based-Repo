@@ -8,7 +8,11 @@ terraform {
 
   backend "azurerm" {
     # Details configured by Github Action
-    use_azuread_auth = true
-    use_oidc         = true
+    resource_group_name  = "Demo-RG"
+    storage_account_name = "demo-dev-ci-sa"
+    container_name       = "backend.tfstate"
+    key                  = "terraform.backend.tfstate"
+    use_azuread_auth     = true
+    use_oidc             = true
   }
 }
