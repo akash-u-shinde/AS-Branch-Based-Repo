@@ -6,9 +6,9 @@ terraform {
     }
   }
 
-  #backend "azurerm" {
-  #  # Details configured by Github Action
-  #  use_azuread_auth = true
-  #  use_oidc         = true
-  #}
+  backend "azurerm" {
+    # Details configured by Github Action
+    use_azuread_auth = true
+    use_oidc         = true
+  }
 }
