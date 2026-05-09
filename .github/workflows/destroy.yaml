@@ -1,0 +1,50 @@
+name: 'Destroy on non-main and feature branches'
+
+on:
+  push:
+    branches:
+      - '*'
+      - '!main'
+      - '!feature/*'
+
+env:
+  TF_LOG: INFO
+  TF_INPUT: false
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform:
+    name: 'Terraform Destroy'
+    runs-on: ubuntu-latest
+
+    # Use the Bash shell
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    # Run Terraform init
+    - name: Terraform Init
+      id: init
+      run: terraform init
+
+    # Run Terraform apply
+    - name: Terraform Apply
+      id: apply
+      run: terraform destroy -auto-approve
