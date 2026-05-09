@@ -2,9 +2,9 @@ name: 'Run Plan on PR'
 
 on: 
   pull_request:
-    branches-ignore:
-        - 'main'
-        - 'feature/*'
+    branches:
+    - 'dev'
+
 
 env:
   TF_LOG: INFO
