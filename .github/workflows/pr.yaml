@@ -1,9 +1,10 @@
 name: 'Run Plan on PR'
 
-on:
+on: 
   pull_request:
-    branches:
-      - dev
+    branches-ignore:
+        - 'main'
+        - 'feature/*'
 
 env:
   TF_LOG: INFO
@@ -27,7 +28,8 @@ jobs:
       uses: hashicorp/setup-terraform@v2
 
     - name: Azure Login
-      uses: Azure/login@v3
+      uses: Azure/login@v1
+      if: github.ref == 'refs/heads/dev'
       with:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
