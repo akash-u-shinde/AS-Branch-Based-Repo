@@ -1,11 +1,7 @@
-name: 'Destroy on non-main and feature branches'
-
+name: Destroy Infrastructure manually
 on:
-  push:
-    branches:
-      - '*'
-      - '!main'
-      - '!feature/*'
+  workflow_dispatch: # This enables the manual trigger button
+
 
 env:
   TF_LOG: INFO
@@ -44,7 +40,7 @@ jobs:
       id: init
       run: terraform init
 
-    # Run Terraform apply
-    - name: Terraform Apply
-      id: apply
+    # Run Terraform destroy
+    - name: Terraform Destroy
+      id: destroy
       run: terraform destroy -auto-approve
