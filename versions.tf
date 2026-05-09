@@ -9,7 +9,7 @@ terraform {
   backend "azurerm" {
     # Details configured by Github Action
     resource_group_name  = "myResourceGroup"
-    storage_account_name = "mystorageacct18230"
+    storage_account_name = "mystorageacct1889"
     container_name       = "mycontainer"
     key                  = "terraform.backend.tfstate"
     use_azuread_auth     = true
