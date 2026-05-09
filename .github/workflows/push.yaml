@@ -1,0 +1,74 @@
+#Runs on push to feature branches and main
+
+name: Check Terraform fmt and Terraform Validate
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: [ "main" , "feature/*" ]
+
+
+  # Allows you to run this workflow manually from the Actions tab
+  #workflow_dispatch:
+
+env:
+  TF_LOG: info
+  TF_input: false
+
+permissions: 
+  id-token: write
+  contents: read
+  
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  terraform :
+    name:  Terraform fmt and Validate 
+    runs-on: ubuntu-latest  # The type of runner that the job will run on
+
+    #Use the bash shell
+    defaults:
+      run:
+        shell: bash
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      #Install prefered version of Terraform cli
+      - name: 'Setup Terraform'
+        uses: hashicorp/setup-terraform@v2.0.3
+        with:
+          terraform_version: '1.15.2'
+
+       #Run Terraform init
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend=false
+
+      #Run Terraform fmt for push
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+
+      #Run a terraform validate
+      #Run even if formatting fails
+
+      - name: Terraform Validate
+        id: validate
+        if: (success() || failure())
+        run: terraform validate
+        
+
+
+
+
+
+
+
+
+
+
+      
+        
