@@ -1,6 +1,9 @@
 name: Destroy Infrastructure manually
 on:
   workflow_dispatch: # This enables the manual trigger button
+  push:
+    branches:
+        - dev
 
 
 env:
