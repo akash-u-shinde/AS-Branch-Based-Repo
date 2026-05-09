@@ -21,13 +21,13 @@ az storage account create \
   --sku Standard_LRS \
   --kind StorageV2
 
-# # Get Storage Account Key
-# echo "Fetching Storage Account Key..."
-# ACCOUNT_KEY=$(az storage account keys list \
-#   --resource-group $RESOURCE_GROUP \
-#   --account-name $STORAGE_ACCOUNT \
-#   --query "[0].value" \
-#   --output tsv)
+# Get Storage Account Key
+echo "Fetching Storage Account Key..."
+ACCOUNT_KEY=$(az storage account keys list \
+  --resource-group $RESOURCE_GROUP \
+  --account-name $STORAGE_ACCOUNT \
+  --query "[0].value" \
+  --output tsv)
 
 # Create Blob Container
 echo "Creating Blob Container..."
